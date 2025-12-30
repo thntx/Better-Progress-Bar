@@ -1,0 +1,117 @@
+{
+    "chunk_size": 10,
+    "positions": {
+        "chunks": "top",
+        "cards": "top"
+    },
+    "visual_options": {
+        "highlight_excess": true,
+        "auto_hide_text": true,
+        "use_good_for_all_pass": false,
+        "only_pass_fail": false,
+        "fail_threshold_op": "gt",
+        "fail_threshold_val": 50,
+        "fail_threshold_unit": "%",
+        "fail_exact_striped": true,
+        "highlight_perfect": false,
+        "perfect_include_hard": true,
+        "perfect_color": "#FFD700"
+    },
+    "colors": {
+        "good": "#66cc66",
+        "hard": "#EEDD88",
+        "easy": "#AA88DD",
+        "again": "#ff6666",
+        "again_chunk": "#984B4B",
+        "undo": "#404040",
+        "current_chunk": "#66aadd",
+        "future": "#303030"
+    },
+    "fail_policy": "acknowledge",
+    "undo_policy": "undo",
+    "double_new": true,
+    "text_options": {
+        "top": {
+            "numbers": {
+                "enabled": true,
+                "type": "absolute",
+                "count_direction": "done",
+                "style": {
+                    "color": "#ffffff",
+                    "bold": true,
+                    "outline": true,
+                    "outline_color": "#303030"
+                }
+            },
+            "percentages": {
+                "enabled": true,
+                "type": "total",
+                "count_direction": "done",
+                "style": {
+                    "color": "#ffffff",
+                    "bold": true,
+                    "outline": true,
+                    "outline_color": "#303030"
+                }
+            }
+        },
+        "bottom": {
+            "numbers": {
+                "enabled": true,
+                "type": "relative",
+                "count_direction": "done",
+                "style": {
+                    "color": "#ffffff",
+                    "bold": true,
+                    "outline": true,
+                    "outline_color": "#303030"
+                }
+            },
+            "percentages": {
+                "enabled": true,
+                "type": "total",
+                "count_direction": "done",
+                "style": {
+                    "color": "#ffffff",
+                    "bold": true,
+                    "outline": true,
+                    "outline_color": "#303030"
+                }
+            }
+        }
+    },
+    "count_method": "queue",
+    "timer": {
+        "use_anki_cap": true,
+        "chunk_timer": {
+            "enabled": false,
+            "format": {
+                "minutes": false,
+                "seconds": true,
+                "milliseconds": false
+            },
+            "style": {
+                "color": "#b0b0b0",
+                "bold": true,
+                "outline": true,
+                "outline_color": "#303030"
+            },
+            "live_enabled": false
+        },
+        "card_timer": {
+            "enabled": false,
+            "format": {
+                "minutes": false,
+                "seconds": true,
+                "milliseconds": true
+            },
+            "style": {
+                "color": "#b0b0b0",
+                "bold": true,
+                "outline": true,
+                "outline_color": "#303030"
+            },
+            "live_enabled": false
+        }
+    }
+}
