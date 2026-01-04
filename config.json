@@ -2,53 +2,148 @@
     "chunk_size": 10,
     "positions": {
         "chunks": "top",
-        "cards": "top"
+        "cards": "top",
+        "stack_order": "chunk"
     },
     "visual_options": {
         "highlight_excess": true,
         "auto_hide_text": true,
         "use_good_for_all_pass": false,
-        "only_pass_fail": false,
-        "fail_threshold_op": "gt",
-        "fail_threshold_val": 50,
-        "fail_threshold_unit": "%",
-        "fail_exact_striped": true,
         "highlight_perfect": false,
         "perfect_include_hard": true,
-        "perfect_color": "#FFD700"
+        "perfect_color": "#FF3388"
+    },
+    "chunk_evaluation": {
+        "weights": {
+            "again": 0.0,
+            "hard": 0.5,
+            "good": 1.0,
+            "easy": 1.5
+        },
+        "intervals": [
+            {
+                "enabled": true,
+                "start_bracket": "[",
+                "start_val": 0.0,
+                "end_bracket": ")",
+                "end_val": 0.25,
+                "color_key": "again"
+            },
+            {
+                "enabled": true,
+                "start_bracket": "[",
+                "start_val": 0.25,
+                "end_bracket": ")",
+                "end_val": 0.5,
+                "color_key": "again",
+                "pattern_key": "hard"
+            },
+            {
+                "enabled": true,
+                "start_bracket": "[",
+                "start_val": 0.5,
+                "end_bracket": ")",
+                "end_val": 0.75,
+                "color_key": "hard"
+            },
+            {
+                "enabled": true,
+                "start_bracket": "[",
+                "start_val": 0.75,
+                "end_bracket": ")",
+                "end_val": 1.0,
+                "color_key": "hard",
+                "pattern_key": "good"
+            },
+            {
+                "enabled": true,
+                "start_bracket": "[",
+                "start_val": 1.0,
+                "end_bracket": ")",
+                "end_val": 1.25,
+                "color_key": "good"
+            },
+            {
+                "enabled": true,
+                "start_bracket": "[",
+                "start_val": 1.25,
+                "end_bracket": ")",
+                "end_val": 1.5,
+                "color_key": "good",
+                "pattern_key": "easy"
+            },
+            {
+                "enabled": true,
+                "start_bracket": "[",
+                "start_val": 1.5,
+                "end_bracket": "]",
+                "end_val": 1.5,
+                "color_key": "easy"
+            }
+        ]
     },
     "colors": {
-        "good": "#66cc66",
+        "good": "#66CC66",
         "hard": "#EEDD88",
         "easy": "#AA88DD",
-        "again": "#ff6666",
-        "again_chunk": "#984B4B",
-        "undo": "#404040",
-        "current_chunk": "#66aadd",
-        "future": "#303030"
+        "again": "#FF6666",
+        "excess": "#984B4B",
+        "undone": "#404040",
+        "buried": "#775544",
+        "suspended": "#663333",
+        "current": "#66AADD",
+        "pending": "#303030"
     },
     "fail_policy": "acknowledge",
+    "bury_policy": "acknowledge",
+    "suspend_policy": "acknowledge",
     "undo_policy": "undo",
     "double_new": true,
     "text_options": {
         "top": {
             "numbers": {
                 "enabled": true,
-                "type": "absolute",
+                "type": "chunks",
                 "count_direction": "done",
                 "style": {
-                    "color": "#ffffff",
+                    "color": "#FFFFFF",
                     "bold": true,
                     "outline": true,
                     "outline_color": "#303030"
                 }
             },
             "percentages": {
-                "enabled": true,
-                "type": "total",
+                "enabled": false,
+                "type": "chunks",
                 "count_direction": "done",
+                "show_decimals": false,
+                "decimals": 2,
                 "style": {
-                    "color": "#ffffff",
+                    "color": "#FFFFFF",
+                    "bold": true,
+                    "outline": true,
+                    "outline_color": "#303030"
+                }
+            },
+            "bar_numbers": {
+                "enabled": false,
+                "type": "cards",
+                "count_direction": "done/total",
+                "style": {
+                    "color": "#FFFFFF",
+                    "bold": true,
+                    "outline": true,
+                    "outline_color": "#303030"
+                }
+            },
+            "bar_percentages": {
+                "enabled": true,
+                "type": "cards",
+                "count_direction": "done",
+                "show_decimals": true,
+                "decimals": 2,
+                "style": {
+                    "color": "#FFFFFF",
                     "bold": true,
                     "outline": true,
                     "outline_color": "#303030"
@@ -61,18 +156,44 @@
                 "type": "relative",
                 "count_direction": "done",
                 "style": {
-                    "color": "#ffffff",
+                    "color": "#FFFFFF",
                     "bold": true,
                     "outline": true,
                     "outline_color": "#303030"
                 }
             },
             "percentages": {
-                "enabled": true,
-                "type": "total",
+                "enabled": false,
+                "type": "relative",
                 "count_direction": "done",
+                "show_decimals": false,
+                "decimals": 2,
                 "style": {
-                    "color": "#ffffff",
+                    "color": "#FFFFFF",
+                    "bold": true,
+                    "outline": true,
+                    "outline_color": "#303030"
+                }
+            },
+            "bar_numbers": {
+                "enabled": true,
+                "type": "absolute",
+                "count_direction": "done/total",
+                "style": {
+                    "color": "#FFFFFF",
+                    "bold": true,
+                    "outline": true,
+                    "outline_color": "#303030"
+                }
+            },
+            "bar_percentages": {
+                "enabled": false,
+                "type": "relative",
+                "count_direction": "done",
+                "show_decimals": false,
+                "decimals": 2,
+                "style": {
+                    "color": "#FFFFFF",
                     "bold": true,
                     "outline": true,
                     "outline_color": "#303030"
@@ -80,7 +201,6 @@
             }
         }
     },
-    "count_method": "queue",
     "timer": {
         "use_anki_cap": true,
         "chunk_timer": {
@@ -91,7 +211,7 @@
                 "milliseconds": false
             },
             "style": {
-                "color": "#b0b0b0",
+                "color": "#B0B0B0",
                 "bold": true,
                 "outline": true,
                 "outline_color": "#303030"
@@ -106,12 +226,15 @@
                 "milliseconds": true
             },
             "style": {
-                "color": "#b0b0b0",
+                "color": "#B0B0B0",
                 "bold": true,
                 "outline": true,
                 "outline_color": "#303030"
             },
             "live_enabled": false
         }
-    }
+    },
+    "fsrs_retention": 0.85,
+    "fsrs_auto_chunk": false,
+    "fsrs_use_deck": false
 }
