@@ -7,6 +7,18 @@ from . import fsrs_logic
 import copy
 from .config_utils import DEFAULT_CONFIG, get_config_val
 
+class NoScrollComboBox(QComboBox):
+    def wheelEvent(self, event):
+        event.ignore()
+
+class NoScrollSpinBox(QSpinBox):
+    def wheelEvent(self, event):
+        event.ignore()
+
+class NoScrollDoubleSpinBox(QDoubleSpinBox):
+    def wheelEvent(self, event):
+        event.ignore()
+
 class SettingsDialog(QDialog):
     def __init__(self, parent, config):
         super().__init__(parent)
@@ -96,7 +108,10 @@ class SettingsDialog(QDialog):
         add_reset_btn(style_layout, self.reset_tab_style, "Restore Tab Defaults")
         
         style_widget.setLayout(style_layout)
-        self.tabs.addTab(style_widget, "Text")
+        self.style_scroll = QScrollArea()
+        self.style_scroll.setWidget(style_widget)
+        self.style_scroll.setWidgetResizable(True)
+        self.tabs.addTab(self.style_scroll, "Text")
 
         # --- Tab 2: Colours ---
         colours_tab = QWidget()
@@ -209,19 +224,19 @@ class SettingsDialog(QDialog):
         eval_layout.addWidget(QLabel("<b>Change these numbers to modify the value of each difficulty:</b>"))
         w_layout = QGridLayout()
         w_layout.addWidget(QLabel("Again:"), 0, 0)
-        self.w_again_spin = QDoubleSpinBox(); self.w_again_spin.setRange(0, 10); self.w_again_spin.setSingleStep(0.1)
+        self.w_again_spin = NoScrollDoubleSpinBox(); self.w_again_spin.setRange(0, 10); self.w_again_spin.setSingleStep(0.1)
         w_layout.addWidget(self.w_again_spin, 0, 1)
         
         w_layout.addWidget(QLabel("Hard:"), 0, 2)
-        self.w_hard_spin = QDoubleSpinBox(); self.w_hard_spin.setRange(0, 10); self.w_hard_spin.setSingleStep(0.1)
+        self.w_hard_spin = NoScrollDoubleSpinBox(); self.w_hard_spin.setRange(0, 10); self.w_hard_spin.setSingleStep(0.1)
         w_layout.addWidget(self.w_hard_spin, 0, 3)
         
         w_layout.addWidget(QLabel("Good:"), 1, 0)
-        self.w_good_spin = QDoubleSpinBox(); self.w_good_spin.setRange(0, 10); self.w_good_spin.setSingleStep(0.1)
+        self.w_good_spin = NoScrollDoubleSpinBox(); self.w_good_spin.setRange(0, 10); self.w_good_spin.setSingleStep(0.1)
         w_layout.addWidget(self.w_good_spin, 1, 1)
         
         w_layout.addWidget(QLabel("Easy:"), 1, 2)
-        self.w_easy_spin = QDoubleSpinBox(); self.w_easy_spin.setRange(0, 10); self.w_easy_spin.setSingleStep(0.1)
+        self.w_easy_spin = NoScrollDoubleSpinBox(); self.w_easy_spin.setRange(0, 10); self.w_easy_spin.setSingleStep(0.1)
         w_layout.addWidget(self.w_easy_spin, 1, 3)
         
         eval_layout.addLayout(w_layout)
@@ -241,7 +256,7 @@ class SettingsDialog(QDialog):
         # FSRS Retention
         fsrs_layout = QHBoxLayout()
         fsrs_layout.addWidget(QLabel("Desired Retention:"))
-        self.fsrs_retention = QDoubleSpinBox()
+        self.fsrs_retention = NoScrollDoubleSpinBox()
         self.fsrs_retention.setRange(0.0, 1.0)
         self.fsrs_retention.setSingleStep(0.01)
         # Load saved retention or default from config.json
@@ -311,7 +326,10 @@ class SettingsDialog(QDialog):
         colours_tab_layout.addStretch()
         add_reset_btn(colours_tab_layout, self.reset_tab_colours, "Restore Tab Defaults")
         colours_tab.setLayout(colours_tab_layout)
-        self.tabs.insertTab(1, colours_tab, "Style")
+        self.colours_scroll = QScrollArea()
+        self.colours_scroll.setWidget(colours_tab)
+        self.colours_scroll.setWidgetResizable(True)
+        self.tabs.insertTab(1, self.colours_scroll, "Style")
  
         # =======================
         # Tab 2: Behaviour
@@ -322,7 +340,7 @@ class SettingsDialog(QDialog):
         # Chunk Size
         h = QHBoxLayout()
         h.addWidget(QLabel("Chunk Size:"))
-        self.chunk_spin = QSpinBox()
+        self.chunk_spin = NoScrollSpinBox()
         self.chunk_spin.setRange(1, 9999)
         self.chunk_spin.setValue(self.get("chunk_size"))
         # Connect to auto-update logic
@@ -334,19 +352,19 @@ class SettingsDialog(QDialog):
         layout_group = QGroupBox("Layout")
         layout_grid = QGridLayout()
         layout_grid.addWidget(QLabel("Chunk Bar:"), 0, 0)
-        self.chunk_pos_combo = QComboBox()
+        self.chunk_pos_combo = NoScrollComboBox()
         self.chunk_pos_combo.addItems(["top", "bottom", "hidden"])
         self.chunk_pos_combo.setCurrentText(self.get("positions", "chunks"))
         layout_grid.addWidget(self.chunk_pos_combo, 0, 1)
         
         layout_grid.addWidget(QLabel("Card Bar:"), 1, 0)
-        self.card_pos_combo = QComboBox()
+        self.card_pos_combo = NoScrollComboBox()
         self.card_pos_combo.addItems(["top", "bottom", "hidden"])
         self.card_pos_combo.setCurrentText(self.get("positions", "cards"))
         layout_grid.addWidget(self.card_pos_combo, 1, 1)
         
         layout_grid.addWidget(QLabel("Which should be on top of the other:"), 2, 0)
-        self.stack_order_combo = QComboBox()
+        self.stack_order_combo = NoScrollComboBox()
         self.stack_order_combo.addItem("chunk bar", "chunk")
         self.stack_order_combo.addItem("card bar", "card")
         cur_stack = self.get("positions", "stack_order")
@@ -372,28 +390,28 @@ class SettingsDialog(QDialog):
         policy_layout = QFormLayout()
         
         # Fail Policy
-        self.fail_policy_cb = QComboBox()
+        self.fail_policy_cb = NoScrollComboBox()
         self.fail_policy_cb.addItems(["ignore", "acknowledge"])
         self.fail_policy_cb.setCurrentText(self.get("fail_policy"))
         self.fail_policy_cb.currentIndexChanged.connect(self.live_update_handler)
         policy_layout.addRow("Action on Again:", self.fail_policy_cb)
         
         # Bury Policy
-        self.bury_policy_cb = QComboBox()
+        self.bury_policy_cb = NoScrollComboBox()
         self.bury_policy_cb.addItems(["ignore", "acknowledge"])
         self.bury_policy_cb.setCurrentText(self.get("bury_policy"))
         self.bury_policy_cb.currentIndexChanged.connect(self.live_update_handler)
         policy_layout.addRow("Action on Bury:", self.bury_policy_cb)
         
         # Suspend Policy
-        self.suspend_policy_cb = QComboBox()
+        self.suspend_policy_cb = NoScrollComboBox()
         self.suspend_policy_cb.addItems(["ignore", "acknowledge"])
         self.suspend_policy_cb.setCurrentText(self.get("suspend_policy"))
         self.suspend_policy_cb.currentIndexChanged.connect(self.live_update_handler)
         policy_layout.addRow("Action on Suspend:", self.suspend_policy_cb)
         
         # Undo Policy
-        self.undo_policy_cb = QComboBox()
+        self.undo_policy_cb = NoScrollComboBox()
         self.undo_policy_cb.addItems(["undo", "acknowledge"])
         self.undo_policy_cb.setCurrentText(self.get("undo_policy"))
         self.undo_policy_cb.currentIndexChanged.connect(self.live_update_handler)
@@ -420,7 +438,10 @@ class SettingsDialog(QDialog):
         
         behaviour_layout.addStretch()
         behaviour_widget.setLayout(behaviour_layout)
-        self.tabs.insertTab(0, behaviour_widget, "General") 
+        self.behaviour_scroll = QScrollArea()
+        self.behaviour_scroll.setWidget(behaviour_widget)
+        self.behaviour_scroll.setWidgetResizable(True)
+        self.tabs.insertTab(0, self.behaviour_scroll, "General") 
  
         
         # Restore Defaults Tab Behaviour
@@ -452,7 +473,7 @@ class SettingsDialog(QDialog):
         h.addWidget(enabled_cb)
         
         # Type
-        type_combo = QComboBox()
+        type_combo = NoScrollComboBox()
         if options is None:
             options = ["relative", "absolute", "total"]
             
@@ -465,7 +486,7 @@ class SettingsDialog(QDialog):
         h.addWidget(type_combo)
         
         # Direction
-        dir_combo = QComboBox()
+        dir_combo = NoScrollComboBox()
         if dir_options is None:
              dir_options = ["done", "remaining"]
         dir_combo.addItems(dir_options)
@@ -480,7 +501,7 @@ class SettingsDialog(QDialog):
             dec_cb.setChecked(config_dict.get("show_decimals", default_dict.get("show_decimals", False)))
             h.addWidget(dec_cb)
             
-            dec_spin = QSpinBox()
+            dec_spin = NoScrollSpinBox()
             dec_spin.setRange(1, 5)
             dec_spin.setValue(config_dict.get("decimals", default_dict.get("decimals", 2)))
             dec_spin.setEnabled(dec_cb.isChecked())
@@ -960,14 +981,14 @@ class SettingsDialog(QDialog):
             row_l.addWidget(en_cb)
             
             # Start Bracket
-            start_bk = QComboBox()
+            start_bk = NoScrollComboBox()
             start_bk.addItems(["[", "("])
             start_bk.setCurrentText(iv.get("start_bracket", def_iv.get("start_bracket", "[")))
             start_bk.setFixedWidth(45)
             row_l.addWidget(start_bk)
             
             # Start Val
-            start_val = QDoubleSpinBox()
+            start_val = NoScrollDoubleSpinBox()
             start_val.setRange(0, 100)
             start_val.setSingleStep(0.1)
             start_val.setFixedWidth(60)
@@ -979,7 +1000,7 @@ class SettingsDialog(QDialog):
             row_l.addWidget(QLabel(","))
             
             # End Val (Editable)
-            end_spin = QDoubleSpinBox()
+            end_spin = NoScrollDoubleSpinBox()
             end_spin.setRange(0, 100) # Open range, logic constrains it
             end_spin.setSingleStep(0.1)
             end_spin.setFixedWidth(60)
@@ -987,7 +1008,7 @@ class SettingsDialog(QDialog):
             row_l.addWidget(end_spin)
             
             # End Bracket (Editable)
-            end_bk = QComboBox()
+            end_bk = NoScrollComboBox()
             end_bk.addItems([")", "]"])
             end_bk.setCurrentText(iv.get("end_bracket", def_iv.get("end_bracket", ")")))
             end_bk.setFixedWidth(45)
