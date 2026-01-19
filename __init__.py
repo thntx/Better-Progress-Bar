@@ -222,7 +222,7 @@ else:
                     logic.on_suspend(self, card)
                 except:
                     pass
-            res = _old_on_on_suspend(self, *args, **kwargs)
+            res = _old_on_suspend(self, *args, **kwargs)
             return res
          Reviewer.onSuspend = _new_on_suspend
 

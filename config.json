@@ -16,9 +16,9 @@
     "chunk_evaluation": {
         "weights": {
             "again": 0.0,
-            "hard": 0.5,
+            "hard": 1.0,
             "good": 1.0,
-            "easy": 1.5
+            "easy": 1.0
         },
         "intervals": [
             {
@@ -26,45 +26,48 @@
                 "start_bracket": "[",
                 "start_val": 0.0,
                 "end_bracket": ")",
-                "end_val": 0.25,
-                "color_key": "again"
+                "end_val": 0.8,
+                "color_key": "again",
+                "pattern_key": null
             },
             {
                 "enabled": true,
                 "start_bracket": "[",
-                "start_val": 0.25,
+                "start_val": 0.8,
                 "end_bracket": ")",
-                "end_val": 0.5,
+                "end_val": 0.85,
                 "color_key": "again",
                 "pattern_key": "hard"
             },
             {
                 "enabled": true,
                 "start_bracket": "[",
-                "start_val": 0.5,
-                "end_bracket": ")",
-                "end_val": 0.75,
-                "color_key": "hard"
+                "start_val": 0.85,
+                "end_bracket": "]",
+                "end_val": 0.85,
+                "color_key": "hard",
+                "pattern_key": null
             },
             {
                 "enabled": true,
-                "start_bracket": "[",
-                "start_val": 0.75,
-                "end_bracket": ")",
-                "end_val": 1.0,
+                "start_bracket": "(",
+                "start_val": 0.85,
+                "end_bracket": "]",
+                "end_val": 0.9,
                 "color_key": "hard",
                 "pattern_key": "good"
             },
             {
                 "enabled": true,
-                "start_bracket": "[",
-                "start_val": 1.0,
-                "end_bracket": ")",
-                "end_val": 1.25,
-                "color_key": "good"
+                "start_bracket": "(",
+                "start_val": 0.9,
+                "end_bracket": "]",
+                "end_val": 1.0,
+                "color_key": "good",
+                "pattern_key": null
             },
             {
-                "enabled": true,
+                "enabled": false,
                 "start_bracket": "[",
                 "start_val": 1.25,
                 "end_bracket": ")",
@@ -73,12 +76,13 @@
                 "pattern_key": "easy"
             },
             {
-                "enabled": true,
+                "enabled": false,
                 "start_bracket": "[",
                 "start_val": 1.5,
                 "end_bracket": "]",
                 "end_val": 1.5,
-                "color_key": "easy"
+                "color_key": "easy",
+                "pattern_key": null
             }
         ]
     },
